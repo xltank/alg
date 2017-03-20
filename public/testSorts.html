@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script type="text/javascript">
+
+        let length = 10;
+        let list = getList(length);
+
+
+        function getList(len){
+            var l = [];
+            for(var i=0; i<len; i++){
+                l.push(parseInt(Math.random()*len));
+            }
+            return l;
+        }
+
+        function quickSort(arr, start=0, end=arr.length-1){
+            var len = end - start + 1;
+            if(len < 2)
+                return arr;
+
+            var v = arr[start];
+            var i=start,
+                j=end;
+
+            while(i<j){
+
+                if(arr[i] > v) {
+                    [arr[i], arr[j]] = [arr[j], arr[i]];
+                }else{
+                    i++;
+                    continue;
+                }
+
+                while(i<j){
+                    if(arr[j] < v){
+                        [arr[j], arr[i]] = [arr[i], arr[j]];
+                        break;
+                    }else{
+                        j--;
+                    }
+                }
+            }
+            arr[i] = v;
+            return arr;
+            console.log(arr.join(","));
+            /*if(len > 2){
+             var midIndex = parseInt((end-start)/2);
+             console.log(start, midIndex, end)
+             quickSort(arr, start, midIndex);
+             quickSort(arr, midIndex+1, end);
+             }*/
+        }
+
+
+
+        console.log("before ", list.join(","));
+
+        //console.log("after ", bubbleSort(list).join(","));
+        //console.log("after ", insertionSort(list).join(","));
+        //console.log("after ", selectionSort(list).join(","));
+        console.log("after ", quickSort(list).join(","));
+
+    </script>
+</head>
+<body>
+
+</body>
+</html>
