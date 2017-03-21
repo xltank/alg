@@ -74,38 +74,80 @@ let get = (nodeId) => {
     })
 })*/
 
-
-let makeTree = () => {
-    let nodeLimit = 50,
-        childrenLimit = 6,
+// depth first
+let makeTree1 = () => {
+    let nodeLimit = 51,
+        childrenLimit = 4,
         index = 1,
         tree = {id: 1, children: []};
 
+    let getNode = () => {
+        index++;
+        return index < nodeLimit ? {id: index, children: []} : null;
+    }
+
     let fillChildren = (node) => { // {id: *, children: null}
-        let c = [],
-            len = parseInt(Math.random() * (childrenLimit+1));
+        let cs = [],
+            len = parseInt(Math.random() * childrenLimit);
         for(let size=0; size<len; size++){
-            c.push({id: index+size, children: []});
+            let n = getNode();
+            if(n)
+                cs.push(n);
         }
-        node.children = c;
+        node.children = cs;
+        console.log('---');
         console.log(node);
-        index += len;
-        return node;
+        if(cs.length > 0){
+            cs.map((c) => {
+                fillChildren(c);
+            })
+        }
     }
 
     let n = fillChildren(tree);
-    children = n;
-
-    d++;
-    if(d < depth && children.length > 0)
-        children.map(function(c){
-            let n = makeNode(c);
-
-        })
-    else
-        return node;
-
-    console.log(tree);
+    //console.log(tree);
 }
 
-makeTree();
+// breadth first
+let makeTree2 = () => {
+    let nodeLimit = 51,
+        childrenLimit = 4,
+        index = 1,
+        tree = {id: 1, children: []},
+        stack = [tree];
+
+    let getNode = () => {
+        index++;
+        return index < nodeLimit ? {id: index, children: []} : null;
+    }
+
+    let fillChildren = (node) => {
+        let cs = [],
+            len = parseInt(Math.random() * childrenLimit);
+        for(let size=0; size<len; size++){
+            let n = getNode();
+            if(n)
+                cs.push(n);
+        }
+        node.children = cs;
+        //console.log('---', cs);
+        //console.log(node);
+        return cs;
+    }
+
+    for(let i=0; i<6; i++){
+        var cs = [];
+        for(let j=0; j<stack.length; j++){
+            //console.log(stack.length);
+            let n = stack.shift();
+            let children = fillChildren(n);
+            cs.push.apply(cs, children);
+        }
+        console.log(cs);
+        stack = cs;
+        //console.log(JSON.stringify(tree));
+        //console.log(tree);
+    }
+}
+
+makeTree2();
